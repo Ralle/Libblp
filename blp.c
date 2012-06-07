@@ -356,15 +356,15 @@ unsigned long LoadBLP(char *destBuf, char *srcBuf, long *width, long *height, un
 			j = 0;
 			i = (blph.sizex * blph.sizey) / 2;
 			for(k = 0; k < i; ++k) {
-				pic[j].R = Pal[tdata[k].i].R;
+				pic[j].R = Pal[tdata[k].i].B;
 				pic[j].G = Pal[tdata[k].i].G;
-				pic[j].B = Pal[tdata[k].i].B;
+				pic[j].B = Pal[tdata[k].i].R;
 				pic[j].A = tdata[k+i].i;
 				++j;
 
-				pic[j].R = Pal[tdata[k].A].R;
+				pic[j].R = Pal[tdata[k].A].B;
 				pic[j].G = Pal[tdata[k].A].G;
-				pic[j].B = Pal[tdata[k].A].B;
+				pic[j].B = Pal[tdata[k].A].R;
 				pic[j].A = tdata[k+i].A;
 				++j;
 			}
@@ -394,9 +394,9 @@ unsigned long LoadBLP(char *destBuf, char *srcBuf, long *width, long *height, un
 
 			i=blph.sizex*blph.sizey;
 			for(k = 0; k < i; ++k) {
-				pic[k].R = Pal[tdata[k].i].R;
+				pic[k].R = Pal[tdata[k].i].B;
 				pic[k].G = Pal[tdata[k].i].G;
-				pic[k].B = Pal[tdata[k].i].B;
+				pic[k].B = Pal[tdata[k].i].R;
 				pic[k].A = 255-Pal[tdata[k].i].A;
 			}
 
@@ -803,10 +803,11 @@ int BLP2Everything(char *srcbuf, unsigned long srcbuflen, const char *szFileDest
 	
 	// !!! Assume image data to have 32 bits per pixel !!!
 
+	int quality = 100;
 	if(isFileOfType(szFileDest, "jpg")) {
-		processedImageSize = MakeJPG(NULL, rawImageData, w, h, 85);
+		processedImageSize = MakeJPG(NULL, rawImageData, w, h, quality);
 		processedImageData = malloc(processedImageSize);
-		MakeJPG(processedImageData, rawImageData, w, h, 85);
+		MakeJPG(processedImageData, rawImageData, w, h, quality);
 	} else if(isFileOfType(szFileDest, "tga")) {
 		processedImageSize = MakeTGA(NULL, rawImageData, w, h, 32);
 		processedImageData = malloc(processedImageSize);
